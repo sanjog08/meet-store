@@ -1,0 +1,19 @@
+import Navbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer';
+import CartDrawer from '@features/cart/components/CartDrawer/CartDrawer';
+import styles from './PageWrapper.module.css';
+
+/**
+ * Root layout shell — wraps all pages with Navbar, main content, Footer, and CartDrawer.
+ * The Outlet content from react-router is passed as `children`.
+ */
+const PageWrapper = ({ children }) => (
+  <div className={styles.wrapper}>
+    <Navbar />
+    <main className={styles.main}>{children}</main>
+    <Footer />
+    <CartDrawer />
+  </div>
+);
+
+export default PageWrapper;
