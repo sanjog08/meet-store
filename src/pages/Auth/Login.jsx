@@ -33,7 +33,7 @@ const Login = () => {
             <Package size={28} strokeWidth={2.5} />
           </div>
           <h1 className={styles.title}>Welcome back</h1>
-          <p className={styles.subtitle}>Sign in to your ShopVault account</p>
+          <p className={styles.subtitle}>Sign in to your Meet Mobile account</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form} noValidate>

@@ -37,7 +37,7 @@ const Navbar = () => {
         {/* Logo */}
         <Link to={ROUTES.HOME} className={styles.logo} onClick={closeMobileMenu}>
           <Package size={24} strokeWidth={2.5} />
-          <span>ShopVault</span>
+          <span>Meet Mobile</span>
         </Link>
 
         {/* Desktop nav links */}

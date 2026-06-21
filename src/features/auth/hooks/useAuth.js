@@ -31,7 +31,7 @@ export const useRegister = () => {
     mutationFn: authService.signup,
     onSuccess: (data) => {
       setAuth(data);
-      toast.success(`Welcome to ShopVault, ${data.user.name}!`);
+      toast.success(`Welcome to Meet Mobile, ${data.user.name}!`);
       navigate(ROUTES.HOME);
     },
     onError: (err) => {

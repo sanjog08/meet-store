@@ -9,10 +9,10 @@ const Footer = () => (
       <div className={styles.brand}>
         <Link to={ROUTES.HOME} className={styles.logo}>
           <Package size={20} strokeWidth={2.5} />
-          ShopVault
+          Meet Mobile
         </Link>
         <p className={styles.tagline}>
-          The premium e-commerce experience for modern shoppers.
+          10+ years of customer trust — Barwaha, Khargone, MP.
         </p>
         <div className={styles.social}>
           <a href="#" className={styles.socialLink} aria-label="Website"><Globe size={18} /></a>
@@ -39,7 +39,7 @@ const Footer = () => (
 
     <div className={`${styles.bottom} container`}>
       <p className={styles.copy}>
-        © {new Date().getFullYear()} ShopVault. All rights reserved.
+        © {new Date().getFullYear()} Meet Mobile. All rights reserved.
       </p>
       <p className={styles.tech}>Built with React + Express</p>
     </div>
