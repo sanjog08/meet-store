@@ -14,12 +14,14 @@ export const ROUTES = {
   PROFILE: '/profile',
   CART: '/cart',
   CHECKOUT: '/checkout',
+  ABOUT_US: '/about-us',
   // Admin
   ADMIN: '/admin',
   ADMIN_DASHBOARD: '/admin/dashboard',
   ADMIN_PRODUCTS: '/admin/products',
   ADMIN_USERS: '/admin/users',
   ADMIN_REQUESTS: '/admin/requests',
+  ADMIN_ABOUT_US: '/admin/about-us',
   // Utils
   NOT_FOUND: '*',
 };

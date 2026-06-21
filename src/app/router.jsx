@@ -14,12 +14,14 @@ const Profile       = lazy(() => import('@pages/Profile'));
 const Cart          = lazy(() => import('@pages/Cart'));
 const Checkout      = lazy(() => import('@pages/Checkout'));
 const NotFound      = lazy(() => import('@pages/NotFound'));
+const AboutUs       = lazy(() => import('@pages/AboutUs'));
 
 // Admin pages
 const AdminDashboard    = lazy(() => import('@pages/admin/Dashboard'));
 const AdminProducts     = lazy(() => import('@pages/admin/ManageProducts'));
 const AdminUsers        = lazy(() => import('@pages/admin/ManageUsers'));
 const AdminRequests     = lazy(() => import('@pages/admin/AdminRequests'));
+const AdminAboutUs      = lazy(() => import('@pages/admin/AdminAboutUs'));
 
 // ── Route guards ──────────────────────────────────────────────
 /** Redirects unauthenticated users to /login */
@@ -69,6 +71,7 @@ const router = createBrowserRouter([
       { path: 'products', element: <Products /> },
       { path: 'products/:id', element: <ProductDetail /> },
       { path: 'cart', element: <Cart /> },
+      { path: 'about-us', element: <AboutUs /> },
 
       // Guest-only routes (redirect if logged in)
       {
@@ -98,6 +101,7 @@ const router = createBrowserRouter([
           { path: 'products', element: <AdminProducts /> },
           { path: 'users', element: <AdminUsers /> },
           { path: 'requests', element: <AdminRequests /> },
+          { path: 'about-us', element: <AdminAboutUs /> },
         ],
       },
 

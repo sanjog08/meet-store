@@ -34,6 +34,10 @@ const Footer = () => (
           <Link to={ROUTES.REGISTER} className={styles.link}>Register</Link>
           <Link to={ROUTES.PROFILE} className={styles.link}>Profile</Link>
         </div>
+        <div className={styles.col}>
+          <h4 className={styles.colTitle}>Company</h4>
+          <Link to={ROUTES.ABOUT_US} className={styles.link}>About Us</Link>
+        </div>
       </div>
     </div>
 

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Users, Package, ShieldCheck, TrendingUp, ArrowRight } from 'lucide-react';
+import { Users, Package, ShieldCheck, TrendingUp, ArrowRight, Store } from 'lucide-react';
 import { useProducts } from '@features/products/hooks/useProducts';
 import { useUsers } from '@features/users/hooks/useUsers';
 import { useAdminRequests } from '@features/admin-requests/hooks/useAdminRequests';
@@ -55,9 +55,10 @@ const Dashboard = () => {
         <h2 className={styles.sectionTitle}>Quick Actions</h2>
         <div className={styles.linkGrid}>
           {[
-            { to: ROUTES.ADMIN_PRODUCTS, label: 'Manage Products', icon: Package, desc: 'Add, edit, or delete products' },
-            { to: ROUTES.ADMIN_USERS,    label: 'Manage Users',    icon: Users,   desc: 'View and manage user accounts' },
-            { to: ROUTES.ADMIN_REQUESTS, label: 'Admin Requests',  icon: ShieldCheck, desc: 'Review pending admin applications' },
+            { to: ROUTES.ADMIN_PRODUCTS,  label: 'Manage Products',    icon: Package,     desc: 'Add, edit, or delete products' },
+            { to: ROUTES.ADMIN_USERS,     label: 'Manage Users',       icon: Users,       desc: 'View and manage user accounts' },
+            { to: ROUTES.ADMIN_REQUESTS,  label: 'Admin Requests',     icon: ShieldCheck, desc: 'Review pending admin applications' },
+            { to: ROUTES.ADMIN_ABOUT_US,  label: 'Edit Business Info', icon: Store,       desc: 'Update About Us page content' },
           ].map(({ to, label, icon: Icon, desc }) => (
             <Link key={to} to={to} className={styles.linkCard}>
               <div className={styles.linkIcon}><Icon size={20} /></div>
