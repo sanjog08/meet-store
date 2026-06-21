@@ -1,5 +1,9 @@
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ShoppingCart, ArrowLeft, Star, Package, Tag } from 'lucide-react';
+import {
+  ShoppingCart, ArrowLeft, Star, Package, Tag,
+  Shield, Percent, CheckCircle, XCircle, ChevronRight,
+} from 'lucide-react';
 import { useProduct } from '@features/products/hooks/useProducts';
 import { useCartStore } from '@store/cartStore';
 import { formatCurrency, formatDate } from '@utils/formatters';
@@ -14,6 +18,7 @@ const ProductDetail = () => {
   const { id } = useParams();
   const { data: product, isLoading, isError } = useProduct(id);
   const addItem = useCartStore((s) => s.addItem);
+  const [activeImage, setActiveImage] = useState(0);
 
   const handleAddToCart = () => {
     addItem(product);
@@ -31,92 +36,157 @@ const ProductDetail = () => {
   if (isError || !product) {
     return (
       <div className={`${styles.error} container`}>
-        <Package size={48} strokeWidth={1} />
+        <Package size={56} strokeWidth={1} />
         <h2>Product not found</h2>
+        <p>This product may have been removed or does not exist.</p>
         <Link to={ROUTES.PRODUCTS}><Button variant="outline">Back to Products</Button></Link>
       </div>
     );
   }
 
-  const imageUrl = product.images?.[0] || `https://picsum.photos/seed/${product._id}/800/600`;
+  const images = product.images?.length
+    ? product.images
+    : [`https://picsum.photos/seed/${product._id}/800/600`];
+
+  const inStock = (product.quantity ?? 0) > 0;
+
+  const discountedPrice = product.discount > 0
+    ? product.price * (1 - product.discount / 100)
+    : null;
 
   return (
     <div className={`${styles.page} container`}>
-      <Link to={ROUTES.PRODUCTS} className={styles.back}>
-        <ArrowLeft size={16} /> Back to Products
-      </Link>
+      {/* Breadcrumb */}
+      <nav className={styles.breadcrumb}>
+        <Link to={ROUTES.HOME}>Home</Link>
+        <ChevronRight size={14} />
+        <Link to={ROUTES.PRODUCTS}>Products</Link>
+        <ChevronRight size={14} />
+        <span>{product.name}</span>
+      </nav>
 
       <div className={styles.layout}>
-        {/* Image */}
+        {/* ── Left: Image Gallery ── */}
         <div className={styles.imageSection}>
-          <div className={styles.mainImage}>
+          <div className={styles.mainImageWrap}>
             <img
-              src={imageUrl}
+              key={activeImage}
+              src={images[activeImage]}
               alt={product.name}
+              className={styles.mainImage}
               onError={(e) => { e.target.src = `https://picsum.photos/seed/${product._id}/800/600`; }}
             />
+            {product.discount > 0 && (
+              <div className={styles.discountBadge}>-{product.discount}%</div>
+            )}
           </div>
-          {product.images?.length > 1 && (
+
+          {images.length > 1 && (
             <div className={styles.thumbnails}>
-              {product.images.slice(0, 4).map((img, i) => (
-                <img key={i} src={img} alt={`${product.name} ${i + 1}`} className={styles.thumb} />
+              {images.map((img, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  className={`${styles.thumb} ${i === activeImage ? styles.thumbActive : ''}`}
+                  onClick={() => setActiveImage(i)}
+                >
+                  <img src={img} alt={`${product.name} ${i + 1}`} />
+                </button>
               ))}
             </div>
           )}
         </div>
 
-        {/* Info */}
+        {/* ── Right: Info Panel ── */}
         <div className={styles.info}>
+          {/* Badges */}
           <div className={styles.badges}>
             {product.category && <Badge variant="brand">{product.category}</Badge>}
             {product.brand && <Badge variant="default">{product.brand}</Badge>}
-            {product.stock === 0
-              ? <Badge variant="danger">Out of Stock</Badge>
-              : <Badge variant="success">In Stock ({product.stock})</Badge>
+            {inStock
+              ? <Badge variant="success"><CheckCircle size={12} /> In Stock</Badge>
+              : <Badge variant="danger"><XCircle size={12} /> Out of Stock</Badge>
             }
           </div>
 
           <h1 className={styles.name}>{product.name}</h1>
 
-          <div className={styles.rating}>
-            {[1, 2, 3, 4, 5].map((s) => (
-              <Star key={s} size={16} fill={s <= 4 ? 'currentColor' : 'none'} />
-            ))}
-            <span className={styles.ratingText}>4.0 (128 reviews)</span>
+          {/* Price */}
+          <div className={styles.priceBlock}>
+            {discountedPrice != null ? (
+              <>
+                <span className={styles.price}>{formatCurrency(discountedPrice)}</span>
+                <span className={styles.originalPrice}>{formatCurrency(product.price)}</span>
+                <span className={styles.saveBadge}>Save {formatCurrency(product.price - discountedPrice)}</span>
+              </>
+            ) : (
+              <span className={styles.price}>{formatCurrency(product.price)}</span>
+            )}
           </div>
 
-          <p className={styles.price}>{formatCurrency(product.price)}</p>
-
+          {/* Description */}
           {product.description && (
-            <p className={styles.description}>{product.description}</p>
+            <div className={styles.descriptionBlock}>
+              <h3 className={styles.sectionTitle}>About this product</h3>
+              <p className={styles.description}>{product.description}</p>
+            </div>
           )}
 
-          <div className={styles.meta}>
+          {/* Meta details */}
+          <div className={styles.metaGrid}>
             {product.brand && (
-              <div className={styles.metaItem}>
-                <Tag size={14} />
-                <span>Brand: <strong>{product.brand}</strong></span>
+              <div className={styles.metaCard}>
+                <Tag size={16} className={styles.metaIcon} />
+                <div>
+                  <span className={styles.metaLabel}>Brand</span>
+                  <span className={styles.metaValue}>{product.brand}</span>
+                </div>
               </div>
             )}
-            <div className={styles.metaItem}>
-              <Package size={14} />
-              <span>Added: <strong>{formatDate(product.createdAt)}</strong></span>
+            <div className={styles.metaCard}>
+              <Package size={16} className={styles.metaIcon} />
+              <div>
+                <span className={styles.metaLabel}>Stock</span>
+                <span className={styles.metaValue}>{product.quantity ?? 0} units</span>
+              </div>
             </div>
+            {product.discount > 0 && (
+              <div className={styles.metaCard}>
+                <Percent size={16} className={styles.metaIcon} />
+                <div>
+                  <span className={styles.metaLabel}>Discount</span>
+                  <span className={styles.metaValue}>{product.discount}% off</span>
+                </div>
+              </div>
+            )}
+            {product.warranty && (
+              <div className={styles.metaCard}>
+                <Shield size={16} className={styles.metaIcon} />
+                <div>
+                  <span className={styles.metaLabel}>Warranty</span>
+                  <span className={styles.metaValue}>{product.warranty}</span>
+                </div>
+              </div>
+            )}
           </div>
 
+          {/* Added date */}
+          <p className={styles.addedDate}>Listed on {formatDate(product.createdAt)}</p>
+
+          {/* Actions */}
           <div className={styles.actions}>
             <Button
               size="lg"
               onClick={handleAddToCart}
-              disabled={product.stock === 0}
+              disabled={!inStock}
               fullWidth
               id="product-detail-add-to-cart"
             >
               <ShoppingCart size={18} />
-              {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+              {inStock ? 'Add to Cart' : 'Out of Stock'}
             </Button>
             <Link to={ROUTES.CHECKOUT} className={styles.checkoutLink}>
-              <Button variant="secondary" size="lg" fullWidth id="product-detail-buy-now">
+              <Button variant="secondary" size="lg" fullWidth id="product-detail-buy-now" disabled={!inStock}>
                 Buy Now
               </Button>
             </Link>

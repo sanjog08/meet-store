@@ -10,38 +10,107 @@ import Input from '@components/ui/Input/Input';
 import Modal from '@components/ui/Modal/Modal';
 import Badge from '@components/ui/Badge/Badge';
 import Spinner from '@components/ui/Spinner/Spinner';
+import mediaService from '@services/media.service';
 import styles from './ManageProducts.module.css';
+
+const coerceNumber = z.any().transform(v => {
+  if (v === '' || v === undefined || v === null) return undefined;
+  return Number(v);
+});
 
 const schema = z.object({
   name:        z.string().min(2, 'Name is required'),
-  price:       z.coerce.number().positive('Price must be positive'),
-  description: z.string().optional(),
-  category:    z.string().optional(),
-  brand:       z.string().optional(),
-  stock:       z.coerce.number().min(0).optional(),
+  price:       coerceNumber.pipe(z.number({ required_error: 'Price is required' }).positive('Price must be positive')),
+  description: z.string().min(1, 'Description is required'),
+  category:    z.string().min(1, 'Category is required'),
+  brand:       z.string().min(1, 'Brand is required'),
+  quantity:    coerceNumber.pipe(z.number({ required_error: 'Quantity is required' }).min(0, 'Quantity cannot be negative')),
+  discount:    coerceNumber.pipe(z.number().min(0, 'Discount cannot be negative').max(100, 'Discount cannot exceed 100').optional()),
+  warranty:    z.string().optional(),
+  images:      z.array(z.string()).max(4, 'Maximum 4 images allowed').optional(),
 });
 
 const ProductForm = ({ onSubmit, isPending, defaultValues }) => {
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm({
     resolver: zodResolver(schema),
-    defaultValues,
+    defaultValues: defaultValues || { images: [] },
   });
 
+  const [isUploading, setIsUploading] = useState(false);
+  const currentImages = watch('images') || [];
+
+  const handleImageUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+    if (currentImages.length + files.length > 4) {
+      alert('Maximum 4 images allowed');
+      return;
+    }
+    setIsUploading(true);
+    try {
+      const responses = await mediaService.upload(files);
+      const urls = responses.map(r => r.url);
+      setValue('images', [...currentImages, ...urls]);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to upload images');
+    } finally {
+      setIsUploading(false);
+      e.target.value = '';
+    }
+  };
+
+  const removeImage = (indexToRemove) => {
+    setValue('images', currentImages.filter((_, idx) => idx !== indexToRemove));
+  };
+
+  const onInvalid = (errs) => {
+    console.error('Form validation errors:', errs);
+    const errorDetails = Object.entries(errs).map(([field, err]) => `${field}: ${err.message}`).join('\n');
+    alert(`Validation Failed:\n${errorDetails}`);
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+    <form onSubmit={handleSubmit(onSubmit, onInvalid)} className={styles.form} noValidate>
       <Input id="prod-name" label="Product Name *" error={errors.name?.message} {...register('name')} />
       <div className={styles.formRow}>
         <Input id="prod-price" label="Price ($) *" type="number" step="0.01" error={errors.price?.message} {...register('price')} />
-        <Input id="prod-stock" label="Stock" type="number" error={errors.stock?.message} {...register('stock')} />
+        <Input id="prod-quantity" label="Stocks" type="number" error={errors.quantity?.message} {...register('quantity')} />
       </div>
       <div className={styles.formRow}>
         <Input id="prod-category" label="Category" error={errors.category?.message} {...register('category')} />
         <Input id="prod-brand" label="Brand" error={errors.brand?.message} {...register('brand')} />
       </div>
+      <div className={styles.formRow}>
+        <Input id="prod-discount" label="Discount (%)" type="number" step="any" error={errors.discount?.message} {...register('discount')} />
+        <Input id="prod-warranty" label="Warranty" error={errors.warranty?.message} {...register('warranty')} />
+      </div>
       <div className={styles.textareaWrap}>
         <label className={styles.textareaLabel}>Description</label>
         <textarea className={styles.textarea} rows={3} {...register('description')} />
       </div>
+      
+      <div className={styles.imageSection}>
+        <label className={styles.textareaLabel}>Product Images (Max 4)</label>
+        <div className={styles.imageGallery}>
+          {currentImages.map((url, idx) => (
+            <div key={idx} className={styles.imagePreview}>
+              <img src={url} alt={`Preview ${idx + 1}`} />
+              <button type="button" onClick={() => removeImage(idx)} className={styles.removeImageBtn}>
+                <X size={14} />
+              </button>
+            </div>
+          ))}
+          {currentImages.length < 4 && (
+            <label className={styles.imageUploadBtn}>
+              {isUploading ? <Spinner size="sm" /> : <Plus size={20} />}
+              <input type="file" multiple accept="image/*" onChange={handleImageUpload} disabled={isUploading} hidden />
+            </label>
+          )}
+        </div>
+        {errors.images?.message && <span className={styles.errorText}>{errors.images.message}</span>}
+      </div>
+
       <Button type="submit" isLoading={isPending} id="product-form-submit">Save Product</Button>
     </form>
   );
@@ -96,8 +165,8 @@ const ManageProducts = () => {
               <span>{p.category ? <Badge variant="brand">{p.category}</Badge> : '—'}</span>
               <span className={styles.price}>{formatCurrency(p.price)}</span>
               <span>
-                <Badge variant={p.stock > 0 ? 'success' : 'danger'}>
-                  {p.stock ?? '—'}
+                <Badge variant={p.quantity > 0 ? 'success' : 'danger'}>
+                  {p.quantity ?? '—'}
                 </Badge>
               </span>
               <div className={styles.actions}>
