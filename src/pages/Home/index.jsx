@@ -1,19 +1,17 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, ShieldCheck, Truck, Wrench, CreditCard,
-  MapPin, Phone, ChevronLeft, ChevronRight, ShoppingCart, Tag,
+  MapPin, Phone, Tag,
 } from 'lucide-react';
 import { useNewProducts } from '@features/products/hooks/useNewProducts';
 import { useTodaysOffer } from '@features/products/hooks/useTodaysOffer';
 import { useProducts } from '@features/products/hooks/useProducts';
-import { useCartStore } from '@store/cartStore';
 import { formatCurrency } from '@utils/formatters';
 import ProductCard from '@features/products/components/ProductCard/ProductCard';
 import Button from '@components/ui/Button/Button';
 import Spinner from '@components/ui/Spinner/Spinner';
 import { ROUTES } from '@utils/constants';
-import toast from 'react-hot-toast';
 import styles from './Home.module.css';
 
 const bizFeatures = [
@@ -24,33 +22,49 @@ const bizFeatures = [
 ];
 
 /* ─────────────────────────────────────────────────────────────
-   Hero Carousel — displays one product at a time, auto-slides
-   every 2 seconds. Shows label, name, price, discount.
+   Hero Carousel — swipe-enabled, no arrow buttons, 5s auto-slide
 ───────────────────────────────────────────────────────────── */
-const HeroCarousel = ({ products, label, accentColor = 'brand' }) => {
+const HeroCarousel = ({ products, label }) => {
   const [active, setActive] = useState(0);
-  const [animating, setAnimating] = useState(false);
-  const addItem = useCartStore((s) => s.addItem);
+  const [slideDir, setSlideDir] = useState(''); // 'left' | 'right' | ''
+  const [sliding, setSliding] = useState(false);
+  const touchStartX = useRef(null);
   const count = products.length;
 
-  const goTo = useCallback((idx) => {
-    if (animating || count <= 1) return;
-    setAnimating(true);
+  const goTo = useCallback((idx, dir = 'left') => {
+    if (sliding || count <= 1) return;
+    setSlideDir(dir);
+    setSliding(true);
     setTimeout(() => {
       setActive(idx);
-      setAnimating(false);
-    }, 300);
-  }, [animating, count]);
+      setSlideDir('');
+      setSliding(false);
+    }, 350);
+  }, [sliding, count]);
 
-  const next = useCallback(() => goTo((active + 1) % count), [active, count, goTo]);
-  const prev = useCallback(() => goTo((active - 1 + count) % count), [active, count, goTo]);
+  const next = useCallback(() => goTo((active + 1) % count, 'left'), [active, count, goTo]);
+  const prev = useCallback(() => goTo((active - 1 + count) % count, 'right'), [active, count, goTo]);
 
-  // Auto-slide every 2 seconds
+  // Auto-slide every 5 seconds
   useEffect(() => {
     if (count <= 1) return;
-    const id = setInterval(next, 2000);
+    const id = setInterval(next, 5000);
     return () => clearInterval(id);
   }, [next, count]);
+
+  // Touch swipe handlers
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) {
+      diff > 0 ? next() : prev();
+    }
+    touchStartX.current = null;
+  };
 
   if (!count) return null;
 
@@ -59,26 +73,37 @@ const HeroCarousel = ({ products, label, accentColor = 'brand' }) => {
   const discounted = product.discount > 0
     ? product.price * (1 - product.discount / 100)
     : null;
-  const inStock = (product.quantity ?? 0) > 0;
-
-  const handleAddToCart = (e) => {
-    e.preventDefault();
-    addItem(product);
-    toast.success(`"${product.name}" added to cart!`);
-  };
 
   return (
-    <div className={styles.heroCarousel}>
-      {/* Background image */}
+    <div
+      className={styles.heroCarousel}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Entire carousel is a link to the product */}
+      <Link
+        to={`/products/${product._id}`}
+        className={styles.heroTileLink}
+        aria-label={`View ${product.name}`}
+      />
+
+      {/* Discount badge — top-left corner, always visible */}
+      {product.discount > 0 && (
+        <span className={styles.heroDiscountCorner}>
+          -{product.discount}% OFF
+        </span>
+      )}
+
+      {/* Background image with slide animation */}
       <div
-        className={`${styles.heroBg} ${animating ? styles.heroBgFade : ''}`}
+        className={`${styles.heroBg} ${sliding ? (slideDir === 'left' ? styles.heroBgSlideLeft : styles.heroBgSlideRight) : ''}`}
         style={{ backgroundImage: `url(${imageUrl})` }}
       />
       <div className={styles.heroBgOverlay} />
 
-      {/* Content */}
+      {/* Content — hidden on mobile, shown on desktop */}
       <div className={`${styles.heroContent} container`}>
-        <div className={`${styles.heroSlide} ${animating ? styles.heroSlideFade : ''}`}>
+        <div className={`${styles.heroSlide} ${sliding ? styles.heroSlideFade : ''}`}>
           <span className={styles.heroLabel}>
             <Tag size={13} /> {label}
           </span>
@@ -92,29 +117,10 @@ const HeroCarousel = ({ products, label, accentColor = 'brand' }) => {
               <>
                 <span className={styles.heroPrice}>{formatCurrency(discounted)}</span>
                 <span className={styles.heroOriginalPrice}>{formatCurrency(product.price)}</span>
-                <span className={styles.heroSaveBadge}>-{product.discount}% OFF</span>
               </>
             ) : (
               <span className={styles.heroPrice}>{formatCurrency(product.price)}</span>
             )}
-          </div>
-
-          <div className={styles.heroActions}>
-            <Link to={`/products/${product._id}`}>
-              <Button size="lg" id={`hero-view-${product._id}`}>
-                View Details <ArrowRight size={17} />
-              </Button>
-            </Link>
-            <Button
-              variant="secondary"
-              size="lg"
-              onClick={handleAddToCart}
-              disabled={!inStock}
-              id={`hero-cart-${product._id}`}
-            >
-              <ShoppingCart size={16} />
-              {inStock ? 'Add to Cart' : 'Out of Stock'}
-            </Button>
           </div>
         </div>
       </div>
@@ -126,23 +132,11 @@ const HeroCarousel = ({ products, label, accentColor = 'brand' }) => {
             <button
               key={i}
               className={`${styles.heroDot} ${i === active ? styles.heroDotActive : ''}`}
-              onClick={() => goTo(i)}
+              onClick={(e) => { e.preventDefault(); goTo(i, i > active ? 'left' : 'right'); }}
               aria-label={`Slide ${i + 1}`}
             />
           ))}
         </div>
-      )}
-
-      {/* Prev / Next arrows */}
-      {count > 1 && (
-        <>
-          <button className={`${styles.heroArrow} ${styles.heroArrowLeft}`} onClick={prev} aria-label="Previous">
-            <ChevronLeft size={22} />
-          </button>
-          <button className={`${styles.heroArrow} ${styles.heroArrowRight}`} onClick={next} aria-label="Next">
-            <ChevronRight size={22} />
-          </button>
-        </>
       )}
 
       {/* Slide counter */}

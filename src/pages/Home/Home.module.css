@@ -48,7 +48,7 @@
   padding: var(--space-12);
 }
 
-/* ── Hero carousel — sharp corners, orange overlay ── */
+/* ── Hero carousel — The full-width hero carousel card ── */
 .heroCarousel {
   position: relative;
   height: 520px;
@@ -56,6 +56,32 @@
   border-radius: var(--radius-md);
   margin: 0 max(1.5rem, calc((100vw - 1280px) / 2 + 1.5rem));
   border: 1px solid rgba(249, 115, 22, 0.2);
+  cursor: pointer;
+}
+
+/* Full-size invisible link overlay — makes entire tile clickable */
+.heroTileLink {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: block;
+}
+
+/* Discount badge — top-left corner, always visible */
+.heroDiscountCorner {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: 5;
+  background: var(--accent-danger);
+  color: #fff;
+  font-size: var(--text-xs);
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
 }
 
 .heroBg {
@@ -66,16 +92,32 @@
   transition: opacity 0.3s ease;
 }
 
-.heroBgFade { opacity: 0; }
+/* Slide left (next) */
+.heroBgSlideLeft {
+  animation: slideLeft 0.35s ease both;
+}
+/* Slide right (prev) */
+.heroBgSlideRight {
+  animation: slideRight 0.35s ease both;
+}
+
+@keyframes slideLeft {
+  from { transform: translateX(6%); opacity: 0.6; }
+  to   { transform: translateX(0);  opacity: 1; }
+}
+@keyframes slideRight {
+  from { transform: translateX(-6%); opacity: 0.6; }
+  to   { transform: translateX(0);   opacity: 1; }
+}
 
 .heroBgOverlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to right,
-    rgba(15, 20, 25, 0.88) 0%,
-    rgba(15, 20, 25, 0.55) 50%,
-    rgba(15, 20, 25, 0.15) 100%
+    rgba(15, 20, 25, 0.45) 0%,
+    rgba(15, 20, 25, 0.2) 50%,
+    rgba(15, 20, 25, 0.05) 100%
   );
 }
 
@@ -424,19 +466,30 @@
 }
 
 @media (max-width: 768px) {
-  .heroCarousel { height: 360px; margin: 0 var(--space-4); }
+  .heroCarousel { height: 280px; margin: 0 var(--space-4); }
   .carouselHeader { padding: 0 var(--space-4); }
   .productsGrid { grid-template-columns: repeat(2, 1fr); }
   .sectionHeader { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
-  .heroProductName { font-size: 1.6rem; }
-  .heroPrice { font-size: var(--text-2xl); }
+
+  /* ── Mobile: hide all text content inside carousel — clean image tile ── */
+  .heroLabel,
+  .heroCategory,
+  .heroProductName,
+  .heroPriceRow,
+  .heroActions {
+    display: none;
+  }
+
+  /* Keep the content wrapper from taking space */
+  .heroContent {
+    display: none;
+  }
 }
 
 @media (max-width: 480px) {
-  .heroCarousel { height: 300px; }
+  .heroCarousel { height: 220px; }
   .features { grid-template-columns: 1fr; }
   .productsGrid { grid-template-columns: 1fr 1fr; }
   .ctaTitle { font-size: var(--text-2xl); }
-  .heroProductName { font-size: 1.35rem; }
   .heroActions { flex-direction: column; }
 }
