@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, Menu, X, Search, Package, LayoutDashboard, LogOut, ShieldCheck } from 'lucide-react';
+import { ShoppingCart, User, Menu, X, Search, Package, LayoutDashboard, LogOut, ShieldCheck, Sun, Moon } from 'lucide-react';
 import { useAuthStore, selectIsAuthenticated, selectIsAdmin, selectUser } from '@store/authStore';
 import { useUiStore } from '@store/uiStore';
 import { selectItemCount, useCartStore } from '@store/cartStore';
@@ -15,7 +15,7 @@ const Navbar = () => {
   const isAdmin = useAuthStore(selectIsAdmin);
   const user = useAuthStore(selectUser);
   const { logout, refreshToken } = useAuthStore();
-  const { toggleMobileMenu, isMobileMenuOpen, closeMobileMenu, openCartDrawer } = useUiStore();
+  const { toggleMobileMenu, isMobileMenuOpen, closeMobileMenu, openCartDrawer, toggleTheme, theme } = useUiStore();
   const itemCount = useCartStore(selectItemCount);
 
   const handleLogout = async () => {
@@ -55,6 +55,17 @@ const Navbar = () => {
 
         {/* Right actions */}
         <div className={styles.actions}>
+          {/* Theme toggle */}
+          <button
+            className={styles.iconBtn}
+            onClick={toggleTheme}
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            id="navbar-theme-toggle"
+            title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+          >
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+
           <button
             className={styles.iconBtn}
             onClick={openCartDrawer}

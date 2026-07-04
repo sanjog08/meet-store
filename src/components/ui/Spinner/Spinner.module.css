@@ -2,7 +2,7 @@
   display: inline-block;
   border-radius: 50%;
   border-style: solid;
-  border-color: rgba(99, 102, 241, 0.2);
+  border-color: rgba(249, 115, 22, 0.2);
   border-top-color: var(--brand-primary);
   animation: spin 0.7s linear infinite;
 }

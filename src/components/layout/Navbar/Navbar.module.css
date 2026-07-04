@@ -1,18 +1,18 @@
+/* ── Navbar — CloudAMQP-style dark orange header ── */
 .header {
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border-bottom: 1px solid var(--glass-border);
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
+  box-shadow: 0 1px 0 rgba(249, 115, 22, 0.12);
 }
 
 .nav {
   display: flex;
   align-items: center;
   gap: var(--space-6);
-  height: 68px;
+  height: 62px;
 }
 
 /* ── Logo ── */
@@ -20,27 +20,56 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  font-size: var(--text-xl);
+  font-size: var(--text-lg);
   font-weight: 800;
-  background: var(--brand-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--brand-primary);
   white-space: nowrap;
   flex-shrink: 0;
   letter-spacing: -0.02em;
+  transition: opacity var(--transition-fast);
 }
+
+.logo:hover { opacity: 0.85; }
 
 .logo svg {
   color: var(--brand-primary);
-  -webkit-text-fill-color: initial;
+}
+
+/* ── Theme toggle button ── */
+.themeToggle {
+  background: none;
+  border: 1px solid var(--border-default);
+  cursor: pointer;
+  color: var(--text-secondary);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+}
+
+.themeToggle:hover {
+  color: var(--brand-primary);
+  background: rgba(249, 115, 22, 0.1);
+  border-color: var(--border-hover);
+}
+
+.themeToggle svg {
+  transition: transform 0.4s ease, opacity 0.2s ease;
+}
+
+.themeToggle:hover svg {
+  transform: rotate(20deg) scale(1.1);
 }
 
 /* ── Nav links ── */
 .navLinks {
   display: flex;
   align-items: center;
-  gap: var(--space-1);
+  gap: 2px;
   flex: 1;
 }
 
@@ -49,24 +78,28 @@
   align-items: center;
   gap: var(--space-1);
   padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   font-size: var(--text-sm);
   font-weight: 500;
   color: var(--text-secondary);
   transition: all var(--transition-fast);
 }
 
-.navLink:hover,
-.navLink.active {
+.navLink:hover {
   color: var(--text-primary);
-  background: var(--bg-tertiary);
+  background: rgba(249, 115, 22, 0.1);
+}
+
+.navLink.active {
+  color: var(--brand-primary);
+  background: rgba(249, 115, 22, 0.12);
 }
 
 /* ── Right actions ── */
 .actions {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   margin-left: auto;
 }
 
@@ -76,7 +109,7 @@
   cursor: pointer;
   color: var(--text-secondary);
   padding: var(--space-2);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   transition: all var(--transition-fast);
   display: flex;
   align-items: center;
@@ -85,8 +118,8 @@
 }
 
 .iconBtn:hover {
-  color: var(--text-primary);
-  background: var(--bg-tertiary);
+  color: var(--brand-primary);
+  background: rgba(249, 115, 22, 0.1);
 }
 
 .cartBadge {
@@ -96,7 +129,7 @@
   background: var(--brand-primary);
   color: #fff;
   font-size: 0.6rem;
-  font-weight: 700;
+  font-weight: 800;
   min-width: 18px;
   height: 18px;
   border-radius: var(--radius-full);
@@ -104,14 +137,14 @@
   align-items: center;
   justify-content: center;
   padding: 0 4px;
-  border: 2px solid var(--bg-primary);
+  border: 2px solid var(--nav-bg);
 }
 
 /* ── Auth links ── */
 .authLinks {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
 .loginLink {
@@ -119,27 +152,30 @@
   font-weight: 500;
   color: var(--text-secondary);
   padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-md);
-  transition: color var(--transition-fast);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
 }
 
 .loginLink:hover {
-  color: var(--text-primary);
+  color: var(--brand-primary);
+  background: rgba(249, 115, 22, 0.1);
 }
 
 .registerLink {
   font-size: var(--text-sm);
-  font-weight: 600;
-  background: var(--brand-gradient);
+  font-weight: 700;
+  background: var(--brand-primary);
   color: #fff;
   padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-md);
-  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  letter-spacing: 0.01em;
 }
 
 .registerLink:hover {
-  opacity: 0.9;
+  background: var(--brand-dark);
   transform: translateY(-1px);
+  box-shadow: var(--shadow-brand);
 }
 
 /* ── User avatar / menu ── */
@@ -148,35 +184,36 @@
 }
 
 .avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-full);
-  background: var(--brand-gradient);
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: var(--brand-primary);
   color: #fff;
-  font-size: var(--text-sm);
-  font-weight: 700;
+  font-size: var(--text-xs);
+  font-weight: 800;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  transition: all var(--transition-fast);
+  letter-spacing: 0.02em;
 }
 
 .avatar:hover {
-  transform: scale(1.05);
+  background: var(--brand-dark);
   box-shadow: var(--shadow-brand);
 }
 
 .dropdown {
   position: absolute;
-  top: calc(100% + 12px);
+  top: calc(100% + 10px);
   right: 0;
   background: var(--bg-secondary);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-brand);
+  border-radius: var(--radius-md);
   min-width: 220px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(249,115,22,0.08);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-8px);
@@ -193,10 +230,11 @@
 
 .dropdownHeader {
   padding: var(--space-4);
+  border-bottom: 1px solid var(--border-default);
 }
 
 .dropdownName {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
   font-size: var(--text-sm);
 }
@@ -228,8 +266,8 @@
 }
 
 .dropdownItem:hover {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
+  background: var(--bg-orange-subtle);
+  color: var(--brand-primary);
 }
 
 .logoutItem {
@@ -249,30 +287,30 @@
   cursor: pointer;
   color: var(--text-secondary);
   padding: var(--space-2);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   transition: all var(--transition-fast);
 }
 
 .hamburger:hover {
-  color: var(--text-primary);
-  background: var(--bg-tertiary);
+  color: var(--brand-primary);
+  background: rgba(249, 115, 22, 0.1);
 }
 
 /* ── Mobile menu ── */
 .mobileMenu {
   display: none;
   flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-4);
-  border-top: 1px solid var(--border-default);
-  background: var(--bg-secondary);
+  gap: 2px;
+  padding: var(--space-3);
+  border-top: 1px solid var(--nav-border);
+  background: var(--nav-bg);
   animation: slideDown 0.2s ease;
 }
 
 .mobileLink {
   display: block;
   padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   font-size: var(--text-base);
   font-weight: 500;
   color: var(--text-secondary);
@@ -280,8 +318,8 @@
 }
 
 .mobileLink:hover {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
+  background: rgba(249, 115, 22, 0.1);
+  color: var(--brand-primary);
 }
 
 .mobileLinkBtn {

@@ -4,8 +4,8 @@
   justify-content: center;
   gap: var(--space-2);
   border: none;
-  border-radius: var(--radius-md);
-  font-weight: 600;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
   cursor: pointer;
   transition: all var(--transition-base);
   position: relative;
@@ -21,42 +21,43 @@
 }
 
 .btn:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
   pointer-events: none;
 }
 
 /* ── Sizes ── */
 .sm {
-  padding: var(--space-2) var(--space-3);
+  padding: 0.4rem var(--space-3);
   font-size: var(--text-sm);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-xs);
 }
 
 .md {
-  padding: 0.625rem var(--space-5);
+  padding: 0.6rem var(--space-5);
   font-size: var(--text-base);
 }
 
 .lg {
-  padding: 0.875rem var(--space-8);
+  padding: 0.8rem var(--space-8);
   font-size: var(--text-lg);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
 }
 
 /* ── Variants ── */
 .primary {
-  background: var(--brand-gradient);
+  background: var(--brand-primary);
   color: #fff;
-  box-shadow: var(--shadow-brand);
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.35);
 }
 .primary:hover:not(:disabled) {
+  background: var(--brand-dark);
   transform: translateY(-1px);
-  box-shadow: 0 6px 28px rgba(99, 102, 241, 0.4);
-  filter: brightness(1.08);
+  box-shadow: 0 6px 24px rgba(249, 115, 22, 0.5);
 }
 .primary:active:not(:disabled) {
   transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.35);
 }
 
 .secondary {
@@ -67,6 +68,7 @@
 .secondary:hover:not(:disabled) {
   background: var(--bg-elevated);
   border-color: var(--border-hover);
+  color: var(--brand-primary);
 }
 
 .ghost {
@@ -74,17 +76,18 @@
   color: var(--text-secondary);
 }
 .ghost:hover:not(:disabled) {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
+  background: var(--bg-orange-subtle);
+  color: var(--brand-primary);
 }
 
 .outline {
   background: transparent;
   color: var(--brand-primary);
-  border: 1px solid var(--brand-primary);
+  border: 1.5px solid var(--brand-primary);
 }
 .outline:hover:not(:disabled) {
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(249, 115, 22, 0.1);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
 }
 
 .danger {

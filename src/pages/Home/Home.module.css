@@ -48,13 +48,14 @@
   padding: var(--space-12);
 }
 
-/* ── The full-width hero carousel card ── */
+/* ── Hero carousel — sharp corners, orange overlay ── */
 .heroCarousel {
   position: relative;
   height: 520px;
   overflow: hidden;
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-md);
   margin: 0 max(1.5rem, calc((100vw - 1280px) / 2 + 1.5rem));
+  border: 1px solid rgba(249, 115, 22, 0.2);
 }
 
 .heroBg {
@@ -72,10 +73,21 @@
   inset: 0;
   background: linear-gradient(
     to right,
-    rgba(0, 0, 0, 0.75) 0%,
-    rgba(0, 0, 0, 0.45) 50%,
-    rgba(0, 0, 0, 0.1) 100%
+    rgba(15, 20, 25, 0.88) 0%,
+    rgba(15, 20, 25, 0.55) 50%,
+    rgba(15, 20, 25, 0.15) 100%
   );
+}
+
+/* Orange left edge accent */
+.heroBgOverlay::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--brand-primary);
 }
 
 .heroContent {
@@ -103,24 +115,23 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  background: rgba(99, 102, 241, 0.25);
-  border: 1px solid rgba(99, 102, 241, 0.5);
-  color: #a5b4fc;
-  padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-full);
+  background: var(--brand-primary);
+  color: #fff;
+  padding: 4px var(--space-3);
+  border-radius: var(--radius-xs);
   font-size: var(--text-xs);
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   width: fit-content;
 }
 
 .heroCategory {
   font-size: var(--text-sm);
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--brand-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
 }
 
 .heroProductName {
@@ -141,13 +152,13 @@
 .heroPrice {
   font-size: var(--text-3xl);
   font-weight: 900;
-  color: #fff;
+  color: var(--brand-primary);
   letter-spacing: -0.02em;
 }
 
 .heroOriginalPrice {
   font-size: var(--text-lg);
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.45);
   text-decoration: line-through;
 }
 
@@ -157,7 +168,7 @@
   font-size: var(--text-xs);
   font-weight: 800;
   padding: 3px 10px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-xs);
   letter-spacing: 0.06em;
 }
 
@@ -181,10 +192,10 @@
 }
 
 .heroDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-xs);
+  background: rgba(255, 255, 255, 0.35);
   border: none;
   cursor: pointer;
   padding: 0;
@@ -192,9 +203,8 @@
 }
 
 .heroDotActive {
-  background: #fff;
+  background: var(--brand-primary);
   width: 24px;
-  border-radius: 4px;
 }
 
 /* Arrows */
@@ -203,12 +213,12 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 3;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: rgba(249, 115, 22, 0.85);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: none;
   color: #fff;
   cursor: pointer;
   display: flex;
@@ -216,7 +226,7 @@
   justify-content: center;
   transition: background var(--transition-fast);
 }
-.heroArrow:hover { background: rgba(255, 255, 255, 0.3); }
+.heroArrow:hover { background: var(--brand-primary); }
 .heroArrowLeft  { left: var(--space-4); }
 .heroArrowRight { right: var(--space-4); }
 
@@ -226,16 +236,16 @@
   bottom: var(--space-4);
   right: var(--space-5);
   font-size: var(--text-xs);
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
   z-index: 3;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(249, 115, 22, 0.5);
   padding: 2px 10px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-xs);
 }
 
 /* ══════════════════════════════════════════
-   BUSINESS FEATURES STRIP
+   BUSINESS FEATURES STRIP — orange-themed
 ══════════════════════════════════════════ */
 .features {
   display: grid;
@@ -249,18 +259,24 @@
   gap: var(--space-4);
   background: var(--bg-secondary);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  padding: var(--space-5);
+  border-left: 3px solid var(--brand-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
   transition: all var(--transition-base);
 }
-.featureCard:hover { border-color: var(--border-brand); transform: translateY(-2px); }
+.featureCard:hover {
+  border-color: var(--border-brand);
+  border-left-color: var(--brand-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.15);
+}
 
 .featureIcon {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-md);
-  background: rgba(99, 102, 241, 0.12);
-  color: var(--brand-primary);
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  background: var(--brand-primary);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -271,7 +287,7 @@
 .featureDesc  { font-size: var(--text-xs); color: var(--text-muted); }
 
 /* ══════════════════════════════════════════
-   ALL PRODUCTS GRID
+   PRODUCTS SECTION HEADER — with orange stripe
 ══════════════════════════════════════════ */
 .productsSection {
   display: flex;
@@ -283,6 +299,8 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
+  padding-left: var(--space-4);
+  border-left: 4px solid var(--brand-primary);
 }
 .sectionHeader a { text-decoration: none; }
 
@@ -295,7 +313,7 @@
 .productsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-5);
+  gap: var(--space-4);
 }
 
 .viewAllWrap {
@@ -306,15 +324,13 @@
 .viewAllWrap a { text-decoration: none; }
 
 /* ══════════════════════════════════════════
-   VISIT US / CTA
+   VISIT US / CTA — full orange fill CloudAMQP-style
 ══════════════════════════════════════════ */
 .cta { padding: 0; }
 
 .ctaInner {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--border-brand);
-  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, var(--brand-primary) 0%, #fbbf24 100%);
+  border-radius: var(--radius-md);
   padding: var(--space-16);
   position: relative;
   overflow: hidden;
@@ -322,12 +338,21 @@
 .ctaInner::before {
   content: '';
   position: absolute;
-  top: -50%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 600px;
+  top: -60%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.ctaInner::after {
+  content: '';
+  position: absolute;
+  bottom: -40%;
+  left: -5%;
+  width: 300px;
   height: 300px;
-  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.1) 0%, transparent 65%);
   pointer-events: none;
 }
 
@@ -345,17 +370,19 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  background: rgba(99, 102, 241, 0.12);
-  border: 1px solid rgba(99, 102, 241, 0.3);
-  color: var(--brand-primary);
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
   padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-xs);
   font-size: var(--text-xs);
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-.ctaTitle { font-size: var(--text-4xl); font-weight: 900; color: var(--text-primary); letter-spacing: -0.03em; }
-.ctaText  { font-size: var(--text-lg); color: var(--text-secondary); max-width: 500px; line-height: 1.7; }
+.ctaTitle { font-size: var(--text-4xl); font-weight: 900; color: #fff; letter-spacing: -0.03em; text-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.ctaText  { font-size: var(--text-lg); color: rgba(255,255,255,0.85); max-width: 500px; line-height: 1.7; }
 
 .ctaActions {
   display: flex;
@@ -365,16 +392,27 @@
 }
 .ctaActions a { text-decoration: none; }
 
+/* Override buttons inside orange CTA */
+.ctaActions button.primary,
+.ctaActions a button {
+  background: #fff !important;
+  color: var(--brand-primary) !important;
+  border: none;
+}
+.ctaActions button.primary:hover {
+  background: rgba(255,255,255,0.9) !important;
+}
+
 .ctaMeta {
   display: flex;
   align-items: center;
   gap: var(--space-2);
   font-size: var(--text-sm);
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.7);
   flex-wrap: wrap;
   justify-content: center;
 }
-.ctaMetaDot { color: var(--text-muted); }
+.ctaMetaDot { color: rgba(255,255,255,0.5); }
 
 /* ══════════════════════════════════════════
    RESPONSIVE

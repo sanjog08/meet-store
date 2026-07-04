@@ -50,7 +50,7 @@
   width: 48px;
   height: 48px;
   border-radius: var(--radius-md);
-  background: rgba(var(--icon-color, #6366f1), 0.12);
+  background: rgba(var(--icon-color, #f97316), 0.12);
   color: var(--icon-color, var(--brand-primary));
   display: flex;
   align-items: center;
@@ -129,7 +129,7 @@
   width: 42px;
   height: 42px;
   border-radius: var(--radius-md);
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(249, 115, 22, 0.1);
   color: var(--brand-primary);
   display: flex;
   align-items: center;

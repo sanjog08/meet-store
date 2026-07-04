@@ -7,6 +7,7 @@
   position: relative;
 }
 
+/* Bold orange atmospheric glow — not subtle */
 .page::before {
   content: '';
   position: fixed;
@@ -15,8 +16,9 @@
   right: 0;
   bottom: 0;
   background:
-    radial-gradient(ellipse at 20% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 60%);
+    radial-gradient(ellipse at 20% 50%, rgba(249, 115, 22, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(251, 146, 60, 0.1) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 100%, rgba(249, 115, 22, 0.08) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
@@ -24,16 +26,15 @@
 .card {
   width: 100%;
   max-width: 460px;
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-xl);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-brand);
+  border-top: 3px solid var(--brand-primary);
+  border-radius: var(--radius-md);
   padding: var(--space-10);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-lg), 0 0 40px rgba(249, 115, 22, 0.1);
   position: relative;
   z-index: 1;
-  animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 .header {
@@ -46,15 +47,15 @@
 }
 
 .logoMark {
-  width: 56px;
-  height: 56px;
-  border-radius: var(--radius-lg);
-  background: var(--brand-gradient);
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-sm);
+  background: var(--brand-primary);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-brand);
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.4);
 }
 
 .title {
@@ -84,13 +85,13 @@
 
 .link {
   color: var(--brand-primary);
-  font-weight: 600;
+  font-weight: 700;
   transition: opacity var(--transition-fast);
 }
 
 .link:hover { opacity: 0.8; }
 
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.95) translateY(8px); }
-  to   { opacity: 1; transform: scale(1) translateY(0); }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

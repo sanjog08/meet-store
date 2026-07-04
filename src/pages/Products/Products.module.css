@@ -10,6 +10,8 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
+  padding-left: var(--space-4);
+  border-left: 4px solid var(--brand-primary);
 }
 
 .title {
@@ -50,7 +52,7 @@
   width: 100%;
   background: var(--bg-secondary);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-sm);
   color: var(--text-primary);
   padding: 0.625rem var(--space-5) 0.625rem 2.75rem;
   font-size: var(--text-base);
@@ -61,7 +63,7 @@
 .searchInput::placeholder { color: var(--text-muted); }
 .searchInput:focus {
   border-color: var(--brand-primary);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
 }
 
 .clearSearch {
@@ -101,10 +103,10 @@
 }
 
 .categoryBtn.active {
-  background: rgba(99, 102, 241, 0.12);
+  background: rgba(249, 115, 22, 0.15);
   border-color: var(--brand-primary);
   color: var(--brand-primary);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* ── Grid ── */
