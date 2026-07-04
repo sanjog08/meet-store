@@ -25,9 +25,6 @@ const Products = () => {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.title}>Products</h1>
-          <p className={styles.subtitle}>
-            {isLoading ? 'Loading…' : `${products.length} products found`}
-          </p>
         </div>
       </div>
 

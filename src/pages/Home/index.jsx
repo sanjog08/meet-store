@@ -2,16 +2,18 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, ShieldCheck, Truck, Wrench, CreditCard,
-  MapPin, Phone, Tag,
+  MapPin, Phone, Tag, ShoppingCart,
 } from 'lucide-react';
 import { useNewProducts } from '@features/products/hooks/useNewProducts';
 import { useTodaysOffer } from '@features/products/hooks/useTodaysOffer';
 import { useProducts } from '@features/products/hooks/useProducts';
+import { useCartStore } from '@store/cartStore';
 import { formatCurrency } from '@utils/formatters';
 import ProductCard from '@features/products/components/ProductCard/ProductCard';
 import Button from '@components/ui/Button/Button';
 import Spinner from '@components/ui/Spinner/Spinner';
 import { ROUTES } from '@utils/constants';
+import toast from 'react-hot-toast';
 import styles from './Home.module.css';
 
 const bizFeatures = [
@@ -29,6 +31,7 @@ const HeroCarousel = ({ products, label }) => {
   const [slideDir, setSlideDir] = useState(''); // 'left' | 'right' | ''
   const [sliding, setSliding] = useState(false);
   const touchStartX = useRef(null);
+  const addItem = useCartStore((s) => s.addItem);
   const count = products.length;
 
   const goTo = useCallback((idx, dir = 'left') => {
@@ -73,6 +76,13 @@ const HeroCarousel = ({ products, label }) => {
   const discounted = product.discount > 0
     ? product.price * (1 - product.discount / 100)
     : null;
+  const inStock = (product.quantity ?? product.stock ?? 0) > 0;
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    addItem(product);
+    toast.success(`"${product.name}" added to cart!`);
+  };
 
   return (
     <div
@@ -101,6 +111,9 @@ const HeroCarousel = ({ products, label }) => {
       />
       <div className={styles.heroBgOverlay} />
 
+      {/* Bottom gradient for text legibility */}
+      <div className={styles.heroBottomGrad} />
+
       {/* Content — hidden on mobile, shown on desktop */}
       <div className={`${styles.heroContent} container`}>
         <div className={`${styles.heroSlide} ${sliding ? styles.heroSlideFade : ''}`}>
@@ -122,27 +135,21 @@ const HeroCarousel = ({ products, label }) => {
               <span className={styles.heroPrice}>{formatCurrency(product.price)}</span>
             )}
           </div>
+
+          {/* Add to Cart — desktop only, hidden on mobile via CSS */}
+          <div className={styles.heroActions}>
+            <Button
+              size="lg"
+              onClick={handleAddToCart}
+              disabled={!inStock}
+              id={`hero-cart-${product._id}`}
+            >
+              <ShoppingCart size={16} />
+              {inStock ? 'Add to Cart' : 'Out of Stock'}
+            </Button>
+          </div>
         </div>
       </div>
-
-      {/* Dot indicators */}
-      {count > 1 && (
-        <div className={styles.heroDots}>
-          {products.map((_, i) => (
-            <button
-              key={i}
-              className={`${styles.heroDot} ${i === active ? styles.heroDotActive : ''}`}
-              onClick={(e) => { e.preventDefault(); goTo(i, i > active ? 'left' : 'right'); }}
-              aria-label={`Slide ${i + 1}`}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Slide counter */}
-      {count > 1 && (
-        <div className={styles.heroCounter}>{active + 1} / {count}</div>
-      )}
     </div>
   );
 };
@@ -222,9 +229,6 @@ const Home = () => {
         <div className={styles.sectionHeader}>
           <div>
             <h2 className={styles.sectionTitle}>All Products</h2>
-            <p className={styles.sectionSubtitle}>
-              {loadingAll ? 'Loading…' : `${allProducts.length} products available`}
-            </p>
           </div>
           <Link to={ROUTES.PRODUCTS}>
             <Button variant="ghost" size="sm">

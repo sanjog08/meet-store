@@ -59,11 +59,11 @@
   cursor: pointer;
 }
 
-/* Full-size invisible link overlay — makes entire tile clickable */
+/* Full-size invisible link overlay — background click → product page */
 .heroTileLink {
   position: absolute;
   inset: 0;
-  z-index: 4;
+  z-index: 1;
   display: block;
 }
 
@@ -132,12 +132,27 @@
   background: var(--brand-primary);
 }
 
+/* Strong bottom-up gradient so text is legible over any image */
+.heroBottomGrad {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    to top,
+    rgba(10, 10, 10, 0.72) 0%,
+    rgba(10, 10, 10, 0.35) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
 .heroContent {
   position: relative;
-  z-index: 2;
+  z-index: 5;              /* above the tile link so buttons are clickable */
   height: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-end;   /* pin to bottom */
+  padding-bottom: var(--space-8);
 }
 
 .heroSlide {
@@ -477,6 +492,12 @@
   .heroProductName,
   .heroPriceRow,
   .heroActions {
+    display: none;
+  }
+
+  /* Hide dark overlays on mobile — full image visibility */
+  .heroBgOverlay,
+  .heroBottomGrad {
     display: none;
   }
 
