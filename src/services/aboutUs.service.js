@@ -1,9 +1,9 @@
 import api from './api';
 
 const aboutUsService = {
-  /** GET /about-us — public */
-  get: async () => {
-    const response = await api.get('/about-us');
+  /** GET /about-us?lang=hi|en — public */
+  get: async (lang = 'en') => {
+    const response = await api.get('/about-us', { params: { lang } });
     return response.data.data;
   },
 

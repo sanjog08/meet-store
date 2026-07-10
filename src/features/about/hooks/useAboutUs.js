@@ -4,10 +4,10 @@ import aboutUsService from '@services/aboutUs.service';
 
 const QUERY_KEY = ['about-us'];
 
-export const useAboutUs = () =>
+export const useAboutUs = (lang = 'en') =>
   useQuery({
-    queryKey: QUERY_KEY,
-    queryFn: aboutUsService.get,
+    queryKey: [...QUERY_KEY, lang],
+    queryFn: () => aboutUsService.get(lang),
     retry: false, // 404 is expected if not yet created
   });
 

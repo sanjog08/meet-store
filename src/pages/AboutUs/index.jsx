@@ -1,11 +1,13 @@
+import { useState } from 'react';
 import {
-  MapPin, Phone, Clock, Smartphone, Wrench, CreditCard,
+  MapPin, Phone, Clock, Smartphone, CreditCard,
   ShieldCheck, CheckCircle, Users, Star, MessageCircle,
 } from 'lucide-react';
 import { useAboutUs } from '@features/about/hooks/useAboutUs';
 import Spinner from '@components/ui/Spinner/Spinner';
 import styles from './AboutUs.module.css';
 
+/* ── Sub-components ── */
 const Section = ({ title, children }) => (
   <div className={styles.section}>
     <h2 className={styles.sectionTitle}>{title}</h2>
@@ -21,8 +23,34 @@ const TagList = ({ items }) => (
   </div>
 );
 
+/* ── Language Toggle ── */
+const LangToggle = ({ lang, setLang }) => (
+  <div className={styles.langBar}>
+    <div className={styles.langToggle} role="group" aria-label="Language toggle">
+      <button
+        id="lang-toggle-en"
+        className={`${styles.langBtn} ${lang === 'en' ? styles.langBtnActive : ''}`}
+        onClick={() => setLang('en')}
+        aria-pressed={lang === 'en'}
+      >
+        EN
+      </button>
+      <button
+        id="lang-toggle-hi"
+        className={`${styles.langBtn} ${lang === 'hi' ? styles.langBtnActive : ''}`}
+        onClick={() => setLang('hi')}
+        aria-pressed={lang === 'hi'}
+      >
+        हिंदी
+      </button>
+    </div>
+  </div>
+);
+
+/* ── Main Page ── */
 const AboutUs = () => {
-  const { data: info, isLoading, isError } = useAboutUs();
+  const [lang, setLang] = useState('en');
+  const { data: info, isLoading, isError } = useAboutUs(lang);
 
   if (isLoading) {
     return (
@@ -34,16 +62,22 @@ const AboutUs = () => {
 
   if (isError || !info) {
     return (
-      <div className={styles.error}>
-        <Smartphone size={48} strokeWidth={1} />
-        <h2>About Us info not available yet.</h2>
-        <p>Check back soon — our team is setting things up.</p>
-      </div>
+      <>
+        <LangToggle lang={lang} setLang={setLang} />
+        <div className={styles.error}>
+          <Smartphone size={48} strokeWidth={1} />
+          <h2>About Us info not available yet.</h2>
+          <p>Check back soon — our team is setting things up.</p>
+        </div>
+      </>
     );
   }
 
   return (
     <div className={styles.page}>
+
+      {/* ── Language toggle bar ── */}
+      <LangToggle lang={lang} setLang={setLang} />
 
       {/* ── Hero banner ── */}
       <div className={styles.hero}>
@@ -111,7 +145,6 @@ const AboutUs = () => {
 
         {/* ── Business Details ── */}
         <div className={styles.infoGrid}>
-          {/* Working hours */}
           {info.workingHours && (
             <div className={styles.infoCard}>
               <div className={styles.infoCardHeader}>
@@ -135,7 +168,6 @@ const AboutUs = () => {
             </div>
           )}
 
-          {/* Payment options */}
           {info.paymentOptions?.length > 0 && (
             <div className={styles.infoCard}>
               <div className={styles.infoCardHeader}>
@@ -150,7 +182,6 @@ const AboutUs = () => {
             </div>
           )}
 
-          {/* EMI Info */}
           {info.emiInfo?.available && (
             <div className={styles.infoCard}>
               <div className={styles.infoCardHeader}>
@@ -161,7 +192,6 @@ const AboutUs = () => {
             </div>
           )}
 
-          {/* Business type */}
           {info.businessType && (
             <div className={styles.infoCard}>
               <div className={styles.infoCardHeader}>
