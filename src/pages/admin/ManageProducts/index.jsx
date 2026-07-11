@@ -9,7 +9,7 @@ import Button from '@components/ui/Button/Button';
 import Input from '@components/ui/Input/Input';
 import Modal from '@components/ui/Modal/Modal';
 import Badge from '@components/ui/Badge/Badge';
-import Spinner from '@components/ui/Spinner/Spinner';
+import { TableSkeleton } from '@components/ui/Skeleton/Skeleton';
 import mediaService from '@services/media.service';
 import styles from './ManageProducts.module.css';
 
@@ -141,7 +141,7 @@ const ManageProducts = () => {
       </div>
 
       {isLoading ? (
-        <div className={styles.loading}><Spinner size="lg" /></div>
+        <TableSkeleton rows={6} columns={[2, 1, 1, 1, 1]} />
       ) : (
         <div className={styles.table}>
           <div className={styles.tableHead}>

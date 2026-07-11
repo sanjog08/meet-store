@@ -10,7 +10,7 @@ import { formatCurrency, formatDate } from '@utils/formatters';
 import { ROUTES, STOCK } from '@utils/constants';
 import Button from '@components/ui/Button/Button';
 import Badge from '@components/ui/Badge/Badge';
-import Spinner from '@components/ui/Spinner/Spinner';
+import { ProductDetailSkeleton } from '@components/ui/Skeleton/Skeleton';
 import toast from 'react-hot-toast';
 import styles from './ProductDetail.module.css';
 
@@ -26,11 +26,7 @@ const ProductDetail = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className={styles.loading}>
-        <Spinner size="xl" />
-      </div>
-    );
+    return <ProductDetailSkeleton />;
   }
 
   if (isError || !product) {

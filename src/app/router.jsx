@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
 import { useAuthStore, selectIsAuthenticated, selectIsAdmin } from '@store/authStore';
 import PageWrapper from '@components/layout/PageWrapper/PageWrapper';
-import Spinner from '@components/ui/Spinner/Spinner';
+import { Skeleton } from '@components/ui/Skeleton/Skeleton';
 
 // ── Lazy-loaded pages ─────────────────────────────────────────
 const Home          = lazy(() => import('@pages/Home'));
@@ -49,8 +49,11 @@ const GuestRoute = () => {
 
 // ── Page loading fallback ─────────────────────────────────────
 const PageLoading = () => (
-  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
-    <Spinner size="lg" />
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '2.5rem 1.5rem' }}>
+    <Skeleton width="40%" height="2rem" />
+    <Skeleton width="100%" height="1rem" />
+    <Skeleton width="80%" height="1rem" />
+    <Skeleton width="60%" height="1rem" />
   </div>
 );
 

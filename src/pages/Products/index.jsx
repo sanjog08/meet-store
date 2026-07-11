@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
 import { useProducts } from '@features/products/hooks/useProducts';
 import ProductCard from '@features/products/components/ProductCard/ProductCard';
-import Spinner from '@components/ui/Spinner/Spinner';
+import { ProductGridSkeleton } from '@components/ui/Skeleton/Skeleton';
 import useDebounce from '@hooks/useDebounce';
 import styles from './Products.module.css';
 
@@ -63,10 +63,7 @@ const Products = () => {
 
       {/* Results */}
       {isLoading ? (
-        <div className={styles.loadingState}>
-          <Spinner size="lg" />
-          <p>Loading products…</p>
-        </div>
+        <ProductGridSkeleton count={8} />
       ) : isError ? (
         <div className={styles.errorState}>
           <p>Failed to load products: {error?.message}</p>

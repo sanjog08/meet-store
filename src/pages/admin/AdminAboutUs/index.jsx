@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Save, Plus, Trash2, RefreshCw } from 'lucide-react';
 import { useAboutUs, useUpsertAboutUs } from '@features/about/hooks/useAboutUs';
 import Button from '@components/ui/Button/Button';
-import Spinner from '@components/ui/Spinner/Spinner';
+import { AdminAboutUsSkeleton } from '@components/ui/Skeleton/Skeleton';
 import Input from '@components/ui/Input/Input';
 import styles from './AdminAboutUs.module.css';
 
@@ -128,7 +128,7 @@ const AdminAboutUs = () => {
   const onSubmit = (data) => upsert(data);
 
   if (isLoading) {
-    return <div className={styles.loading}><Spinner size="xl" /></div>;
+    return <AdminAboutUsSkeleton />;
   }
 
   return (

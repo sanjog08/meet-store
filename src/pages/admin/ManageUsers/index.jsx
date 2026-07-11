@@ -5,7 +5,7 @@ import { formatDate, getInitials } from '@utils/formatters';
 import Button from '@components/ui/Button/Button';
 import Badge from '@components/ui/Badge/Badge';
 import Modal from '@components/ui/Modal/Modal';
-import Spinner from '@components/ui/Spinner/Spinner';
+import { TableSkeleton } from '@components/ui/Skeleton/Skeleton';
 import styles from './ManageUsers.module.css';
 
 const ManageUsers = () => {
@@ -41,7 +41,7 @@ const ManageUsers = () => {
       </div>
 
       {isLoading ? (
-        <div className={styles.loading}><Spinner size="lg" /></div>
+        <TableSkeleton rows={6} columns={[2, 2, 1, 1, 1]} />
       ) : users.length === 0 ? (
         <p className={styles.empty}>No users found.</p>
       ) : (

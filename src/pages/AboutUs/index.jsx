@@ -4,7 +4,7 @@ import {
   ShieldCheck, CheckCircle, Users, Star, MessageCircle,
 } from 'lucide-react';
 import { useAboutUs } from '@features/about/hooks/useAboutUs';
-import Spinner from '@components/ui/Spinner/Spinner';
+import { AboutUsSkeleton } from '@components/ui/Skeleton/Skeleton';
 import styles from './AboutUs.module.css';
 
 /* ── Sub-components ── */
@@ -51,11 +51,7 @@ const AboutUs = () => {
   const { data: info, isLoading, isError } = useAboutUs(lang);
 
   if (isLoading) {
-    return (
-      <div className={styles.loading}>
-        <Spinner size="xl" />
-      </div>
-    );
+    return <AboutUsSkeleton />;
   }
 
   if (isError || !info) {

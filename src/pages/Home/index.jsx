@@ -11,7 +11,7 @@ import { useCartStore } from '@store/cartStore';
 import { formatCurrency } from '@utils/formatters';
 import ProductCard from '@features/products/components/ProductCard/ProductCard';
 import Button from '@components/ui/Button/Button';
-import Spinner from '@components/ui/Spinner/Spinner';
+import { HeroCarouselSkeleton, ProductGridSkeleton } from '@components/ui/Skeleton/Skeleton';
 import { ROUTES, BUSINESS, PRODUCT_UI } from '@utils/constants';
 import toast from 'react-hot-toast';
 import styles from './Home.module.css';
@@ -182,7 +182,7 @@ const Home = () => {
         </div>
 
         {loadingNew ? (
-          <div className={styles.carouselLoader}><Spinner size="lg" /></div>
+          <HeroCarouselSkeleton />
         ) : newProducts.length === 0 ? (
           <p className={styles.carouselEmpty}>No new products added yet.</p>
         ) : (
@@ -216,7 +216,7 @@ const Home = () => {
         </div>
 
         {loadingOffer ? (
-          <div className={styles.carouselLoader}><Spinner size="lg" /></div>
+          <HeroCarouselSkeleton />
         ) : offerProducts.length === 0 ? (
           <p className={styles.carouselEmpty}>No offers available today.</p>
         ) : (
@@ -238,7 +238,7 @@ const Home = () => {
         </div>
 
         {loadingAll ? (
-          <div className={styles.loadingState}><Spinner size="lg" /></div>
+          <ProductGridSkeleton count={8} />
         ) : allProducts.length === 0 ? (
           <p className={styles.emptyState}>No products available yet.</p>
         ) : (

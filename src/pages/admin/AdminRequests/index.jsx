@@ -4,7 +4,7 @@ import { useAdminRequests, useReviewRequest, useWithdrawRequest } from '@feature
 import { formatDate, getInitials } from '@utils/formatters';
 import Badge from '@components/ui/Badge/Badge';
 import Button from '@components/ui/Button/Button';
-import Spinner from '@components/ui/Spinner/Spinner';
+import { RequestCardsSkeleton } from '@components/ui/Skeleton/Skeleton';
 import styles from './AdminRequests.module.css';
 
 const STATUS_VARIANT = {
@@ -44,7 +44,7 @@ const AdminRequests = () => {
       </div>
 
       {isLoading ? (
-        <div className={styles.loading}><Spinner size="lg" /></div>
+        <RequestCardsSkeleton count={5} />
       ) : requests.length === 0 ? (
         <div className={styles.empty}>
           <p>No admin requests found{statusFilter ? ` with status "${statusFilter}"` : ''}.</p>
