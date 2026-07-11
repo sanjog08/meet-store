@@ -25,25 +25,23 @@ const TagList = ({ items }) => (
 
 /* ── Language Toggle ── */
 const LangToggle = ({ lang, setLang }) => (
-  <div className={styles.langBar}>
-    <div className={styles.langToggle} role="group" aria-label="Language toggle">
-      <button
-        id="lang-toggle-en"
-        className={`${styles.langBtn} ${lang === 'en' ? styles.langBtnActive : ''}`}
-        onClick={() => setLang('en')}
-        aria-pressed={lang === 'en'}
-      >
-        EN
-      </button>
-      <button
-        id="lang-toggle-hi"
-        className={`${styles.langBtn} ${lang === 'hi' ? styles.langBtnActive : ''}`}
-        onClick={() => setLang('hi')}
-        aria-pressed={lang === 'hi'}
-      >
-        हिंदी
-      </button>
-    </div>
+  <div className={styles.langToggle} role="group" aria-label="Language toggle">
+    <button
+      id="lang-toggle-en"
+      className={`${styles.langBtn} ${lang === 'en' ? styles.langBtnActive : ''}`}
+      onClick={() => setLang('en')}
+      aria-pressed={lang === 'en'}
+    >
+      EN
+    </button>
+    <button
+      id="lang-toggle-hi"
+      className={`${styles.langBtn} ${lang === 'hi' ? styles.langBtnActive : ''}`}
+      onClick={() => setLang('hi')}
+      aria-pressed={lang === 'hi'}
+    >
+      हिंदी
+    </button>
   </div>
 );
 
@@ -62,25 +60,29 @@ const AboutUs = () => {
 
   if (isError || !info) {
     return (
-      <>
-        <LangToggle lang={lang} setLang={setLang} />
+      <div className={styles.errorPage}>
+        <div className={styles.errorLangRow}>
+          <LangToggle lang={lang} setLang={setLang} />
+        </div>
         <div className={styles.error}>
           <Smartphone size={48} strokeWidth={1} />
           <h2>About Us info not available yet.</h2>
           <p>Check back soon — our team is setting things up.</p>
         </div>
-      </>
+      </div>
     );
   }
 
   return (
     <div className={styles.page}>
 
-      {/* ── Language toggle bar ── */}
-      <LangToggle lang={lang} setLang={setLang} />
-
       {/* ── Hero banner ── */}
       <div className={styles.hero}>
+        {/* ── Language toggle — top-right corner of hero ── */}
+        <div className={styles.heroLangRow}>
+          <LangToggle lang={lang} setLang={setLang} />
+        </div>
+
         <div className={`${styles.heroInner} container`}>
           <div className={styles.heroBadge}>
             <MapPin size={13} /> {info.city}, {info.district} · {info.state}

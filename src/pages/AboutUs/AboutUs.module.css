@@ -1,10 +1,20 @@
-/* ── Language toggle bar ── */
-.langBar {
+/* ── Language toggle — top-right corner of hero ── */
+.heroLangRow {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-6);
+  z-index: 2;
+}
+
+/* ── Language toggle — error-state fallback ── */
+.errorPage {
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: var(--space-2) var(--space-6);
-  background: var(--bg-primary);
+  flex-direction: column;
+}
+.errorLangRow {
+  display: flex;
+  justify-content: flex-start;
+  padding: var(--space-4) var(--space-6);
   border-bottom: 1px solid var(--border-default);
 }
 
