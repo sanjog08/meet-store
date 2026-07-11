@@ -3,7 +3,7 @@ import { ShoppingBag, ArrowRight, Lock, CreditCard, MapPin } from 'lucide-react'
 import { useCartStore, selectCartItems, selectTotalPrice } from '@store/cartStore';
 import { useAuthStore, selectIsAuthenticated } from '@store/authStore';
 import { formatCurrency } from '@utils/formatters';
-import { ROUTES } from '@utils/constants';
+import { ROUTES, SHIPPING } from '@utils/constants';
 import Button from '@components/ui/Button/Button';
 import styles from './Checkout.module.css';
 
@@ -11,7 +11,7 @@ const Checkout = () => {
   const items = useCartStore(selectCartItems);
   const totalPrice = useCartStore(selectTotalPrice);
   const isAuthenticated = useAuthStore(selectIsAuthenticated);
-  const shippingCost = totalPrice > 50 ? 0 : 9.99;
+  const shippingCost = totalPrice > SHIPPING.FREE_ABOVE ? 0 : SHIPPING.FLAT_FEE;
 
   if (items.length === 0) {
     return (

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { ShoppingCart, Star } from 'lucide-react';
 import { useCartStore } from '@store/cartStore';
 import { formatCurrency } from '@utils/formatters';
-import { ROUTES } from '@utils/constants';
+import { ROUTES, STOCK, PRODUCT_UI } from '@utils/constants';
 import Button from '@components/ui/Button/Button';
 import Badge from '@components/ui/Badge/Badge';
 import toast from 'react-hot-toast';
@@ -19,7 +19,7 @@ const ProductCard = ({ product }) => {
   };
 
   const imageUrl = product.images?.[0] || `https://picsum.photos/seed/${product._id}/400/300`;
-  const isNew = new Date(product.createdAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  const isNew = new Date(product.createdAt) > new Date(Date.now() - PRODUCT_UI.NEW_BADGE_DAYS * 24 * 60 * 60 * 1000);
 
   // Normalize stock — API may use either field
   const stock = product.quantity ?? product.stock ?? 0;
@@ -62,7 +62,7 @@ const ProductCard = ({ product }) => {
         {/* Stock indicator */}
         {stock === 0 ? (
           <span className={`${styles.stockBadge} ${styles.stockOut}`}>Out of Stock</span>
-        ) : stock < 5 ? (
+        ) : stock <= STOCK.LOW_THRESHOLD ? (
           <span className={`${styles.stockBadge} ${styles.stockLow}`}>Only {stock} left</span>
         ) : (
           <span className={`${styles.stockBadge} ${styles.stockIn}`}>In Stock</span>

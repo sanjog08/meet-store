@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { ShoppingCart, ArrowRight, Trash2, Plus, Minus } from 'lucide-react';
 import { useCartStore, selectCartItems, selectTotalPrice } from '@store/cartStore';
 import { formatCurrency } from '@utils/formatters';
-import { ROUTES } from '@utils/constants';
+import { ROUTES, SHIPPING } from '@utils/constants';
 import Button from '@components/ui/Button/Button';
 import styles from './Cart.module.css';
 
@@ -73,12 +73,12 @@ const Cart = () => {
             </div>
             <div className={styles.summaryRow}>
               <span>Shipping</span>
-              <span className={styles.free}>{totalPrice > 50 ? 'Free' : formatCurrency(9.99)}</span>
+              <span className={styles.free}>{totalPrice > SHIPPING.FREE_ABOVE ? 'Free' : formatCurrency(SHIPPING.FLAT_FEE)}</span>
             </div>
             <div className={styles.divider} />
             <div className={`${styles.summaryRow} ${styles.totalRow}`}>
               <span>Total</span>
-              <span>{formatCurrency(totalPrice > 50 ? totalPrice : totalPrice + 9.99)}</span>
+              <span>{formatCurrency(totalPrice > SHIPPING.FREE_ABOVE ? totalPrice : totalPrice + SHIPPING.FLAT_FEE)}</span>
             </div>
           </div>
           <Link to={ROUTES.CHECKOUT}>

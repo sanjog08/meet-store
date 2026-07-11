@@ -7,7 +7,7 @@ import {
 import { useProduct } from '@features/products/hooks/useProducts';
 import { useCartStore } from '@store/cartStore';
 import { formatCurrency, formatDate } from '@utils/formatters';
-import { ROUTES } from '@utils/constants';
+import { ROUTES, STOCK } from '@utils/constants';
 import Button from '@components/ui/Button/Button';
 import Badge from '@components/ui/Badge/Badge';
 import Spinner from '@components/ui/Spinner/Spinner';
@@ -54,7 +54,7 @@ const ProductDetail = () => {
   // Stock display label for customers
   const stockLabel = stock === 0
     ? 'Out of Stock'
-    : stock < 5
+    : stock <= STOCK.LOW_THRESHOLD
       ? `Only ${stock} left`
       : 'In Stock';
 
@@ -113,7 +113,7 @@ const ProductDetail = () => {
             {product.brand && <Badge variant="default">{product.brand}</Badge>}
             {stock === 0 ? (
               <Badge variant="danger"><XCircle size={12} /> Out of Stock</Badge>
-            ) : stock < 5 ? (
+            ) : stock <= STOCK.LOW_THRESHOLD ? (
               <Badge variant="warning"><CheckCircle size={12} /> Only {stock} left</Badge>
             ) : (
               <Badge variant="success"><CheckCircle size={12} /> In Stock</Badge>

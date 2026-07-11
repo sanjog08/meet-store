@@ -12,7 +12,7 @@ import { formatCurrency } from '@utils/formatters';
 import ProductCard from '@features/products/components/ProductCard/ProductCard';
 import Button from '@components/ui/Button/Button';
 import Spinner from '@components/ui/Spinner/Spinner';
-import { ROUTES } from '@utils/constants';
+import { ROUTES, BUSINESS, PRODUCT_UI } from '@utils/constants';
 import toast from 'react-hot-toast';
 import styles from './Home.module.css';
 
@@ -51,7 +51,7 @@ const HeroCarousel = ({ products, label }) => {
   // Auto-slide every 5 seconds
   useEffect(() => {
     if (count <= 1) return;
-    const id = setInterval(next, 5000);
+    const id = setInterval(next, PRODUCT_UI.CAROUSEL_INTERVAL_MS);
     return () => clearInterval(id);
   }, [next, count]);
 
@@ -269,12 +269,12 @@ const Home = () => {
               Same-day delivery expected within Barwaha.
             </p>
             <div className={styles.ctaActions}>
-              <a href="https://wa.me/919039760672" target="_blank" rel="noreferrer">
+              <a href={BUSINESS.WHATSAPP_URL} target="_blank" rel="noreferrer">
                 <Button size="lg" id="cta-whatsapp-btn">
                   <Phone size={16} /> WhatsApp Order
                 </Button>
               </a>
-              <a href="https://maps.app.goo.gl/VuM5A3nLQCUyHUQJA" target="_blank" rel="noreferrer">
+              <a href={BUSINESS.MAP_URL} target="_blank" rel="noreferrer">
                 <Button variant="secondary" size="lg" id="cta-directions-btn">
                   <MapPin size={16} /> Get Directions
                 </Button>

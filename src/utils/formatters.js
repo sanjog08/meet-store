@@ -2,18 +2,21 @@
  * Pure formatting utilities — no side effects, easily testable.
  */
 
+import { CURRENCY } from './constants';
+
 /**
- * Formats a number as a currency string.
+ * Formats a number as a currency string using Indian Rupees (₹) by default.
  * @param {number} amount
- * @param {string} currency - ISO 4217 currency code (default: 'USD')
- * @returns {string} e.g. '$1,299.99'
+ * @param {string} [currency] - ISO 4217 currency code (default: 'INR')
+ * @returns {string} e.g. '₹1,299'
  */
-export const formatCurrency = (amount, currency = 'USD') => {
+export const formatCurrency = (amount, currency = CURRENCY.CODE) => {
   if (amount == null || isNaN(amount)) return '—';
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat(CURRENCY.LOCALE, {
     style: 'currency',
     currency,
-    minimumFractionDigits: 2,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   }).format(amount);
 };
 
