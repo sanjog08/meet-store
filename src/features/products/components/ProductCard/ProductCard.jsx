@@ -21,6 +21,9 @@ const ProductCard = ({ product }) => {
   const imageUrl = product.images?.[0] || `https://picsum.photos/seed/${product._id}/400/300`;
   const isNew = new Date(product.createdAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
+  // Normalize stock — API may use either field
+  const stock = product.quantity ?? product.stock ?? 0;
+
   return (
     <Link to={`/products/${product._id}`} className={styles.card}>
       <div className={styles.imageWrap}>
@@ -34,14 +37,14 @@ const ProductCard = ({ product }) => {
           }}
         />
         {isNew && <Badge variant="brand" className={styles.newBadge}>NEW</Badge>}
-        {product.stock === 0 && (
+        {stock === 0 && (
           <div className={styles.outOfStock}>Out of Stock</div>
         )}
         <div className={styles.overlay}>
           <Button
             size="sm"
             onClick={handleAddToCart}
-            disabled={product.stock === 0}
+            disabled={stock === 0}
             id={`add-to-cart-${product._id}`}
           >
             <ShoppingCart size={15} />
@@ -55,6 +58,15 @@ const ProductCard = ({ product }) => {
           <span className={styles.category}>{product.category}</span>
         )}
         <h3 className={styles.name}>{product.name}</h3>
+
+        {/* Stock indicator */}
+        {stock === 0 ? (
+          <span className={`${styles.stockBadge} ${styles.stockOut}`}>Out of Stock</span>
+        ) : stock < 5 ? (
+          <span className={`${styles.stockBadge} ${styles.stockLow}`}>Only {stock} left</span>
+        ) : (
+          <span className={`${styles.stockBadge} ${styles.stockIn}`}>In Stock</span>
+        )}
 
         <div className={styles.meta}>
           <div className={styles.rating}>

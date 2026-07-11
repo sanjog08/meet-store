@@ -48,7 +48,15 @@ const ProductDetail = () => {
     ? product.images
     : [`https://picsum.photos/seed/${product._id}/800/600`];
 
-  const inStock = (product.quantity ?? 0) > 0;
+  const stock = product.quantity ?? product.stock ?? 0;
+  const inStock = stock > 0;
+
+  // Stock display label for customers
+  const stockLabel = stock === 0
+    ? 'Out of Stock'
+    : stock < 5
+      ? `Only ${stock} left`
+      : 'In Stock';
 
   const discountedPrice = product.discount > 0
     ? product.price * (1 - product.discount / 100)
@@ -103,10 +111,13 @@ const ProductDetail = () => {
           <div className={styles.badges}>
             {product.category && <Badge variant="brand">{product.category}</Badge>}
             {product.brand && <Badge variant="default">{product.brand}</Badge>}
-            {inStock
-              ? <Badge variant="success"><CheckCircle size={12} /> In Stock</Badge>
-              : <Badge variant="danger"><XCircle size={12} /> Out of Stock</Badge>
-            }
+            {stock === 0 ? (
+              <Badge variant="danger"><XCircle size={12} /> Out of Stock</Badge>
+            ) : stock < 5 ? (
+              <Badge variant="warning"><CheckCircle size={12} /> Only {stock} left</Badge>
+            ) : (
+              <Badge variant="success"><CheckCircle size={12} /> In Stock</Badge>
+            )}
           </div>
 
           <h1 className={styles.name}>{product.name}</h1>
@@ -146,8 +157,8 @@ const ProductDetail = () => {
             <div className={styles.metaCard}>
               <Package size={16} className={styles.metaIcon} />
               <div>
-                <span className={styles.metaLabel}>Stock</span>
-                <span className={styles.metaValue}>{product.quantity ?? 0} units</span>
+                <span className={styles.metaLabel}>Availability</span>
+                <span className={styles.metaValue}>{stockLabel}</span>
               </div>
             </div>
             {product.discount > 0 && (
