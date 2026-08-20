@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   ShoppingCart, ArrowLeft, Star, Package, Tag,
-  Shield, Percent, CheckCircle, XCircle, ChevronRight,
+  Shield, Percent, CheckCircle, XCircle, ChevronRight, Lock, MessageCircle,
 } from 'lucide-react';
 import { useProduct } from '@features/products/hooks/useProducts';
 import { useCartStore } from '@store/cartStore';
 import { formatCurrency, formatDate } from '@utils/formatters';
-import { ROUTES, STOCK } from '@utils/constants';
+import { ROUTES, STOCK, BUSINESS } from '@utils/constants';
 import Button from '@components/ui/Button/Button';
 import Badge from '@components/ui/Badge/Badge';
 import { ProductDetailSkeleton } from '@components/ui/Skeleton/Skeleton';
@@ -192,11 +192,35 @@ const ProductDetail = () => {
               <ShoppingCart size={18} />
               {inStock ? 'Add to Cart' : 'Out of Stock'}
             </Button>
-            <Link to={ROUTES.CHECKOUT} className={styles.checkoutLink}>
-              <Button variant="secondary" size="lg" fullWidth id="product-detail-buy-now" disabled={!inStock}>
-                Buy Now
+            <div className={styles.actionsRow}>
+              <Button
+                variant="secondary"
+                size="lg"
+                fullWidth
+                disabled
+                id="product-detail-buy-now"
+                title="Order placement coming soon"
+              >
+                <Lock size={16} />
+                Buy Now (Coming Soon)
               </Button>
-            </Link>
+              <a
+                href={`${BUSINESS.WHATSAPP_URL}?text=${encodeURIComponent(`${product.name} is available now?`)}`}
+                target="_blank"
+                rel="noreferrer"
+                className={styles.whatsappLink}
+              >
+                <Button
+                  variant="outline"
+                  size="lg"
+                  fullWidth
+                  id="product-detail-whatsapp-btn"
+                >
+                  <MessageCircle size={16} />
+                  WhatsApp
+                </Button>
+              </a>
+            </div>
           </div>
         </div>
       </div>

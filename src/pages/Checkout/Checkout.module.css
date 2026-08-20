@@ -47,12 +47,19 @@
 .cardHeader {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--space-3);
   color: var(--text-primary);
   font-size: var(--text-lg);
   font-weight: 700;
   padding-bottom: var(--space-4);
   border-bottom: 1px solid var(--border-default);
+}
+
+.cardHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
 }
 
 .placeholderNotice {
@@ -67,6 +74,12 @@
   color: var(--brand-primary);
 }
 
+.noticeLink {
+  color: var(--brand-primary);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
 .mockFields { display: flex; flex-direction: column; gap: var(--space-4); }
 .mockRow { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
 
@@ -79,6 +92,64 @@
   background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--bg-elevated) 50%, var(--bg-tertiary) 75%);
   background-size: 400px 100%;
   animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* ── Saved address display ── */
+.savedAddress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.savedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--accent-success);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.savedDetails {
+  padding: var(--space-4);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.savedName {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.savedPhone {
+  margin-top: var(--space-2);
+  color: var(--text-muted);
+}
+
+/* ── Address form ── */
+.addressForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.addressFormRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.addressFormActions {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
 }
 
 /* ── Summary ── */
@@ -162,6 +233,18 @@
 }
 .loginNote a { color: var(--brand-primary); font-weight: 600; }
 
+/* ── Order actions ── */
+.orderActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.whatsappLink {
+  text-decoration: none;
+  display: flex;
+}
+
 @keyframes shimmer {
   from { background-position: -400px 0; }
   to   { background-position: 400px 0; }
@@ -170,4 +253,6 @@
 @media (max-width: 900px) {
   .layout { grid-template-columns: 1fr; }
   .summary { position: static; }
+  .addressFormRow { grid-template-columns: 1fr; }
+  .mockRow { grid-template-columns: 1fr; }
 }

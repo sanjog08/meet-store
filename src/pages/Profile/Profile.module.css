@@ -80,6 +80,19 @@
   gap: var(--space-5);
 }
 
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.sectionHeader .sectionTitle {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
 .sectionTitle {
   font-size: var(--text-lg);
   font-weight: 700;
@@ -127,6 +140,56 @@
   max-width: 480px;
 }
 
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.formActions {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+/* ── Address display ── */
+.addressDisplay {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.addressRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--text-muted);
+}
+
+.addressRow > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.addressRowGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.addressHint {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  padding: var(--space-3) var(--space-4);
+  background: rgba(249, 115, 22, 0.06);
+  border: 1px solid rgba(249, 115, 22, 0.15);
+  border-radius: var(--radius-md);
+}
+
 /* Orders placeholder */
 .ordersPlaceholder {
   display: flex;
@@ -160,4 +223,6 @@
 @media (max-width: 768px) {
   .layout { grid-template-columns: 1fr; }
   .profileCard { position: static; }
+  .formRow { grid-template-columns: 1fr; }
+  .addressRowGrid { grid-template-columns: 1fr; }
 }

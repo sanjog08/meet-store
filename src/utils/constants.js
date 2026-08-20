@@ -53,6 +53,7 @@ export const QUERY_KEYS = {
   PRODUCT: 'product',
   USERS: 'users',
   USER: 'user',
+  USER_ADDRESS: 'user-address',
   ADMIN_REQUESTS: 'admin-requests',
   ABOUT_US: 'about-us',
 };
