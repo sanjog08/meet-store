@@ -13,8 +13,8 @@ export const CURRENCY = {
 // ── Business / Contact ─────────────────────────────────────────
 export const BUSINESS = {
   NAME: 'Meet Mobile',
-  WHATSAPP_NUMBER: '919039760672',          // include country code, no +
-  WHATSAPP_URL: 'https://wa.me/919039760672',
+  WHATSAPP_NUMBER: '919303788777',          // include country code, no +
+  WHATSAPP_URL: 'https://wa.me/919303788777',
   MAP_URL: 'https://maps.app.goo.gl/VuM5A3nLQCUyHUQJA',
   COUNTRY_CODE: '91',                       // dialing prefix for local numbers
 };
