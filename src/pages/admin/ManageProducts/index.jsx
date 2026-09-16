@@ -10,6 +10,7 @@ import Input from '@components/ui/Input/Input';
 import Modal from '@components/ui/Modal/Modal';
 import Badge from '@components/ui/Badge/Badge';
 import { TableSkeleton } from '@components/ui/Skeleton/Skeleton';
+import Spinner from '@components/ui/Spinner/Spinner';
 import mediaService from '@services/media.service';
 import styles from './ManageProducts.module.css';
 
